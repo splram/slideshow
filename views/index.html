@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="/styles.css">
+  <script src="/panchang.js"></script>
+  <script src="/suncalc.js"></script>
+  <!-- <script src="/lunarphase.js"></script> -->
+  <script type="text/javascript">
+            /*var test_date = new Date();
+        test_date.setFullYear(2022);
+        test_date.setMonth(11);
+        test_date.setDate(27);
+        test_date.setHours(0);test_date.setMinutes(0);test_date.setSeconds(0);
+        console.log("test_date", test_date, getMonthName(test_date), "Shukla");*/
+        //buildMonthNames(new Date());
+    var months = [];
+
+    const date = new Date();
+    var todayDate = new Date();
+    var len = 0;
+    var images=[];
+    var dow = 'Mon';
+    var fulldow='Monday';
+    var _days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    var fulldays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    function getFullDow() {
+      let d = (new Date()).getDay();
+      return fulldays[d];
+    }
+    function getDow() {
+      let d = (new Date()).getDay();
+//console.log("1111111111111111111", d, _days);
+      return _days[d];
+    }
+    function ajax_get(url, callback) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+//                console.log('responseText:' + xmlhttp.responseText);
+                try {
+                    var data = JSON.parse(xmlhttp.responseText);
+                } catch(err) {
+                    console.log(err.message + " in " + xmlhttp.responseText);
+                    return;
+                }
+                callback(data);
+            }
+        };
+    
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+    }
+    function getImages() {
+      dow = getDow();
+      ajax_get('/images?folder=' + dow, function(data) {
+          images = data;
+      });
+    }
+    getImages();
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    function showPanchang() {
+      var t = new Date();
+      fulldow = getFullDow();
+      panchang.calculate(t, function() {
+        
+//        console.log(panchang)
+        var el=document.getElementById("p_date");
+        const today = t;
+        const yyyy = today.getFullYear();
+        let mm = today.getMonth() + 1; // Months start at 0!
+        let dd = today.getDate();
+
+        if (dd < 10) dd = '0' + dd;
+        if (mm < 10) mm = '0' + mm;
+
+        const formattedToday = dd + '/' + mm + '/' + yyyy;
+        el.innerText = formattedToday;
+        
+        let hh = today.getHours();
+        let mi = today.getMinutes();
+        let se = today.getSeconds();
+        if (hh == 0 && mi === 0 && se === 0) {
+          todayDate = new Date();
+          buildMonthNames(todayDate);
+        }
+
+        if (hh <10) hh = '0' + hh;
+        if (mi < 10) mi = '0' + mi;
+        if (se < 10) se = '0' + se;
+        const formattedTime = hh + ":" + mi + ":" + se;
+        el=document.getElementById("p_time");
+        el.innerText=formattedTime;
+
+        el=document.getElementById("p_day");
+        el.innerText=fulldow;
+
+        el=document.getElementById('p_tithi');
+        let stdt = panchang.Tithi.start + '';
+        stdt = stdt.substr(0, stdt.indexOf('GMT')-1);
+        let eddt = panchang.Tithi.end + '';
+        eddt = eddt.substr(0, eddt.indexOf('GMT')-1);
+        el.innerText=panchang.Tithi.name// + " " + stdt + ' to ' + eddt;
+
+        el=document.getElementById('p_nakshatra');
+        stdt = panchang.Nakshatra.start + '';
+        stdt = stdt.substr(0, stdt.indexOf('GMT')-1);
+        eddt = panchang.Nakshatra.end + '';
+        eddt = eddt.substr(0, eddt.indexOf('GMT')-1);
+        el.innerText=panchang.Nakshatra.name //+ " " + stdt + ' to ' + eddt;
+
+
+        el=document.getElementById('p_raasi');
+        el.innerText=panchang.Raasi.name;
+
+        el=document.getElementById('p_karna');
+        stdt = panchang.Karna.start + '';
+        stdt = stdt.substr(0, stdt.indexOf('GMT')-1);
+        eddt = panchang.Karna.end + '';
+        eddt = eddt.substr(0, eddt.indexOf('GMT')-1);
+        el.innerText=panchang.Karna.name //+ " " + stdt + ' to ' + eddt;
+
+        el=document.getElementById('p_paksham');
+        el.innerText=panchang.paksham.name;
+
+
+        el=document.getElementById('p_maasa');
+        //el.innerText='Maasa: ' + getMonthName(new Date(), panchang.paksham.name);
+        el.innerText=getMonthName(todayDate);
+        
+        // console.log("1111111111", x, isNewMoon(x));
+
+        el=document.getElementById('p_year');
+        el.innerText=panchang.samvatsara.name;
+
+
+        el=document.getElementById('p_yoga');
+        stdt = panchang.Yoga.start + '';
+        stdt = stdt.substr(0, stdt.indexOf('GMT')-1);
+        eddt = panchang.Yoga.end + '';
+        eddt = eddt.substr(0, eddt.indexOf('GMT')-1);
+        el.innerText=panchang.Yoga.name;// + " " + stdt + ' to ' + eddt;
+
+
+        
+      });
+    }
+    function _showPanchang() {
+      showPanchang();
+    }
+    function _showImage() {
+      len = images.length;
+      let index = getRandomInt(0, len - 1);
+      let imgEl = document.getElementById("image")
+     // imgEl["src"] = `/showimage?imagePath=${images[index]}`;
+     imgEl.style.backgroundImage = `url(/showimage?imagePath=${images[index]})`;
+    }
+    function isNewMoon(_xdt) {
+      var dt = new Date(_xdt);
+        // dt.setHours(0);
+        // dt.setMinutes(0);
+        // dt.setSeconds(0);
+        for (var i = 0; i < 720*2; i++) {
+            dt.setMinutes(dt.getMinutes() + 1);
+            dt.setSeconds(0);
+            //console.log(dt, SunCalc.getMoonIllumination(dt).phase)
+            if (SunCalc.getMoonIllumination(dt).phase >= 0.97) {
+                return true;
+            }
+        }
+        return false;
+        
+    }
+    function buildMonthNames(_curDate) {
+      var masa = ["Chaitra", "Vaishaakha", "Jyaishtha", "Aashaadha", "Shraavana", "Bhaadrapada", "Aashvayuja", "Kaartika", "Maargashirsha", "Pushya", "Maagha", "Phaalguna"];
+      // calculate months from march occurring between two new moons
+      
+      var startDayOfMonth = null;
+      var i = 0;
+      var curDate = new Date(_curDate);
+      while (startDayOfMonth === null && i < 365) {
+        if (curDate.getMonth() !== 3) {
+          curDate.setDate(curDate.getDate() - 1);
+        } else {
+          startDayOfMonth = new Date(curDate);
+          startDayOfMonth.setDate(1);startDayOfMonth.setHours(0); startDayOfMonth.setMinutes(0); startDayOfMonth.setSeconds(0);
+        }
+        i++;
+      }
+      while (!isNewMoon(startDayOfMonth)) {
+        startDayOfMonth.setDate(startDayOfMonth.getDate() + 1);
+      }
+      //startDayOfMonth.setDate(startDayOfMonth.getDate() - 28);
+      startDayOfMonth.setDate(startDayOfMonth.getDate() + 1);
+      console.log("first month date", startDayOfMonth);
+      var lastDateOfMonth = new Date(startDayOfMonth);
+      lastDateOfMonth.setDate(lastDateOfMonth.getDate() + 1);
+      while (!isNewMoon(lastDateOfMonth)) {
+        lastDateOfMonth.setDate(lastDateOfMonth.getDate() + 1);
+      }
+      console.log("end month date", lastDateOfMonth);
+      months.push({name:masa[0], "start" : new Date(startDayOfMonth), "end" : new Date(lastDateOfMonth)});
+
+      startDayOfMonth.setDate(lastDateOfMonth.getDate() + 1);
+      // find new moon in the first month
+      for (var i = 1; i < 12; i++) {
+        lastDateOfMonth = new Date(lastDateOfMonth);
+        lastDateOfMonth.setDate(lastDateOfMonth.getDate() + 1);
+        while (!isNewMoon(lastDateOfMonth)) {
+          lastDateOfMonth.setDate(lastDateOfMonth.getDate() + 1);
+        }
+        lastDateOfMonth.setDate(lastDateOfMonth.getDate() + 1);
+        months.push({name:masa[i], "start" : new Date(startDayOfMonth), "end" : new Date(lastDateOfMonth)});
+        
+        //lastDateOfMonth.setDate(lastDateOfMonth.getDate() + 1);
+        startDayOfMonth = new Date(lastDateOfMonth);
+        startDayOfMonth.setDate(startDayOfMonth.getDate() + 1)
+
+      }
+
+      console.log("111111111111", months);
+
+    }
+    /*function getMonthName(dt, paksham) {
+      
+      // var tith = ["Padyami", "Vidhiya", "Thadiya", "Chavithi", "Panchami", "Shasti", "Sapthami", "Ashtami", "Navami", "Dasami", "Ekadasi", "Dvadasi", "Trayodasi", "Chaturdasi", "Punnami", "Padyami", "Vidhiya", "Thadiya", "Chaviti", "Panchami", "Shasti", "Sapthami", "Ashtami", "Navami", "Dasami", "Ekadasi", "Dvadasi", "Trayodasi", "Chaturdasi", "Amavasya"];
+      var _dt = new Date(dt);
+      console.log('111111', _dt, paksham)
+      var mname = "";
+      var i = 0;
+      // find new moon
+      while (!isNewMoon(_dt)) {
+        console.log("000000", _dt);
+        _dt.setDate(_dt.getDate() - 1);
+        i++;
+      }
+      var amavasyaDate = _dt;
+      var poornimaDate = dt.setDate(dt.getDate() - 15)
+      console.log('22222222', _dt)
+      if ((dt.getMonth() === 1 && _dt.getMonth() === 0) || (dt.getMonth() === 1 && _dt.getMonth() === 1)) { // Jan
+        mname = "Magha"
+      } else if ((dt.getMonth() === 2 && _dt.getMonth() === 1) || (dt.getMonth() === 2 && _dt.getMonth() === 2)) { // Feb
+        mname = "Phalguna"
+      } else if ((dt.getMonth() === 3 && _dt.getMonth() === 2) || (dt.getMonth() === 3 && _dt.getMonth() === 3)) { // Mar
+        mname = "Chaitra"
+      } else if ((dt.getMonth() === 4 && _dt.getMonth() === 3) || (dt.getMonth() === 4 && _dt.getMonth() === 4)) { // Apr
+        mname = "Vaisakha"
+      } else if ((dt.getMonth() === 5 && _dt.getMonth() === 4) || (dt.getMonth() === 5 && _dt.getMonth() === 5)) { // May
+        mname = "Jyaistha"
+      } else if ((dt.getMonth() === 6 && _dt.getMonth() === 5) || (dt.getMonth() === 6 && _dt.getMonth() === 6)) { // Jun
+        mname = "Asadha"
+      } else if ((dt.getMonth() === 7 && _dt.getMonth() === 6) || dt.getMonth() === 7 && _dt.getMonth() === 7) { // Jul
+        mname = "Shravana"
+      } else if ((dt.getMonth() === 8 &&  _dt.getMonth() === 7) || (dt.getMonth() === 8 &&  _dt.getMonth() === 8)) { // cur month in sep amavasya in aug
+        mname = "Bhadra"
+      } else if ((dt.getMonth() === 9 && _dt.getMonth() === 8) || (dt.getMonth() === 9 && _dt.getMonth() === 9)) {  // current month oct amavasya in sept
+        mname = "Asvija"
+      } else if ((dt.getMonth() === 10 && _dt.getMonth() === 9) || (dt.getMonth() === 10 && _dt.getMonth() === 10)) {  // cur month nov amavasya in oct
+        mname = "Kartika"
+      } else if ((dt.getMonth() === 11 && _dt.getMonth() === 10) || (dt.getMonth() === 11 && _dt.getMonth() === 11)) {  // cur month dec amavasya in nov
+        mname = "Margasira"
+      } else if ((dt.getMonth() === 0 && _dt.getMonth() === 11 || (dt.getMonth() === 0 && _dt.getMonth() === 0 && (dt.getDay() - _dt.getDay() < 15)))) { // cur month jan  amavasya in jan
+        mname = "Pushya"
+      }
+
+
+      
+      return mname;
+    }*/
+    
+    function getMonthName(_dt) {
+      for (var i = 0; i < months.length; i++) {
+        if (_dt >= months[i].start && _dt <= months[i].end) {
+          return months[i].name
+        }
+      }
+      return "";
+    }
+    function format_date(dt) {
+      var dd = dt.getDate();
+      if (dd < 10) dd = "0" + dd;
+
+      var mm = dt.getMonth() + 1;
+      if (mm < 10) mm = "0" + mm;
+      return dd + "/" + mm  + "/" + dt.getFullYear();
+    }
+    function startSlideShow() {
+      if (images) {
+        _showImage();
+        _showPanchang();
+
+        setInterval(() => {
+          getImages();
+          _showImage();
+        }, 5 * 1000);
+
+       setInterval(() => {
+          _showPanchang();
+        }, 1000);
+        
+      }
+    }
+    // todayDate.setDate(10);
+    // todayDate.setMonth(0)
+    // todayDate.setFullYear(2022);
+    buildMonthNames(todayDate);
+    setTimeout(() => {
+      var mi=document.getElementById("months-info");
+      var mStr = "";
+      for (var i = 0; i < 12; i++) {
+        mStr = mStr + months[i].name + ": " + format_date(months[i].start) + "-" + format_date(months[i].end) + "|";
+      }
+      mi.innerText = mStr;
+
+      startSlideShow();
+    }, 2000);
+
+  </script>
+</head>
+<body>
+  <div style="float: left; width: 100%; height:100%;">
+    <div class="info-block">
+      <div class="white-text">
+        <div id="p_date" style="width:33%;float:left"></div>
+        <div id="p_time" style="width:33%;float:left"></div>
+        <div id="p_day" style="width:33%;float:left"></div>
+      </div>
+    </div>
+    <div class="info-block-2">
+      <div class="white-text">
+        <div class="line1"> 
+          <div id="p_year_label" class="content-label">Samvatsaram</div>
+          <div id="p_year" class="content-text"></div>
+
+          <div id="p_maasa_label" class="content-label">Maasam</div>
+          <div id="p_maasa"  class="content-text"></div>
+
+          <div id="p_paksham_label" class="content-label">Paksham</div>
+          <div id="p_paksham"  class="content-text"></div>
+
+          <p id="p_tithi_label" class="content-label">Tithi</p>
+          <p id="p_tithi" class="content-text"></p>
+        </div>
+        
+        <div class="line1"> 
+          <div id="p_nakshatra_label" class="content-label">Nakshatram</div>
+          <div id="p_nakshatra" class="content-text"></div>
+
+          <div id="p_raasi_label" class="content-label">Raasi</div>
+          <div id="p_raasi" class="content-text"></div>
+
+          <div id="p_karna_label" class="content-label">Karna</div>
+          <div id="p_karna" class="content-text"></div>
+
+          <div id="p_yoga_label" class="content-label">Yoga</div>
+          <div id="p_yoga" class="content-text"></div>
+
+        </div>
+        </div>
+    </div>
+    <div class="info-block-2">
+      <div class="white-text">
+        <div class="month-name" id="months-info">
+            
+        </div>
+      </div>
+    
+  </div>
+
+    <div class="main-image">
+        <!-- <img id="image" class="img"/> -->
+        <div id="image" class="image-styled"></div>
+    </div>
+  </div>
+<script>
+
+</script>
+
+</body>
+</html> 
