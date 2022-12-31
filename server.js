@@ -36,6 +36,7 @@ app.get('/reset.css', (req, res) => {
 
 var imagesRootPath = '/home/rammohanyadavalli/Pictures/slideshow';
 app.get('/images', (req, res) => {
+    imagesRootPath = path.join(__dirname, 'slideshow_images');
     let iPath = req.query.folder;
     let files = getFiles(imagesRootPath + '/' + iPath);
     res.send(files);

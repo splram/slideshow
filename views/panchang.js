@@ -1,17 +1,18 @@
 d2r = Math.PI / 180;
 r2d = 180 / Math.PI;
-var zn = ["Mesha", "Vrushabha", "Mithuna", "Karkataka", "Simha", "Kanya", "Tula", "Vrushchika", "Dhanu", "Makara", "Kumbha", "Meena"];
-var wd = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+//var zn = ["Mesha", "Vrushabha", "Mithuna", "Karkataka", "Simha", "Kanya", "Tula", "Vrushchika", "Dhanu", "Makara", "Kumbha", "Meena"];
+var zn = ["మేషా", "వృషభ", "మిథున", "కర్కాటక", "సింహా", "కన్యా", "తుల", "వృశ్చిక", "ధను", "మకర", "కుంభ", "మీన"];
+var wd = ["ఆదివారం", "సోమవారం", "మంగళవారం", "బుధవారం", "గురువారం", "శుక్రవారం", "శనివారం"];
 var range = [1, 31, 0, 0, -3000, 4000, 0, 23, 0, 59, -12, 12, 0, 59];
-var naks = ["Ashwini", "Bharani", "Kruthika", "Rohini", "Mrugasira", "Aarudra", "Punarwasu", "Pushyami", "Aslesha", "Makha", "Pubha", "Uttara", "Hasta", "Chitta", "Swati", "Visakha", "Anuradha", "Jyesta", "Mula", "Purva-Shada", "Uttara-Shaada", "Sravanam", "Dhanista", "Satabhisham", "Purva-Bhadra", "Uttara-Bhadra", "Revathi"];
-var tith = ["Padyami", "Vidhiya", "Thadiya", "Chavithi", "Panchami", "Shasti", "Sapthami", "Ashtami", "Navami", "Dasami", "Ekadasi", "Dvadasi", "Trayodasi", "Chaturdasi", "Punnami", "Padyami", "Vidhiya", "Thadiya", "Chaviti", "Panchami", "Shasti", "Sapthami", "Ashtami", "Navami", "Dasami", "Ekadasi", "Dvadasi", "Trayodasi", "Chaturdasi", "Amavasya"];
-var kar = ["Bawa", "Balava", "Kaulava", "Taitula", "Garaja", "Vanija", "Vishti", "Sakuna", "Chatushpada", "Nagava", "Kimstughana"];
-var yog = ["Vishkambha", "Prithi", "Ayushman", "Saubhagya", "Sobhana", "Atiganda", "Sukarman", "Dhrithi", "Soola", "Ganda", "Vridhi", "Dhruva", "Vyaghata", "Harshana", "Vajra", "Siddhi", "Vyatipata", "Variyan", "Parigha", "Siva", "Siddha", "Sadhya", "Subha", "Sukla", "Bramha", "Indra", "Vaidhruthi"];
+var naks = ["అశ్విని", "భరణి", "కృతిక", "రోహిణి", "మృగశిర", "ఆరుద్ర", "పునర్వసు", "పుష్యమి", "ఆశ్లేష", "మఖా", "పుభ", "ఉత్తర", "హస్త", "చిత్తా", "స్వాతి", "విశాఖ", "అనురాధ", "జ్యేస్టా", "మూల", "పూర్వాషాడ", "ఉత్తరాషాడ", "శ్రవణం", "ధనిష్ట", "శతభిషం", "పూర్వాభద్ర", "ఉత్తరాభద్ర", "రేవతి"];
+var tith = ["పాడ్యమి", "విధియా", "తదియ", "చవితి", "పంచమి", "షష్టి", "సప్తమి", "అష్టమి", "నవమి", "దశమి", "ఏకాదశి", "ద్వాదశి", "త్రయోదశి", "చతుర్దశి", "పౌర్ణమి", "పాడ్యమి", "విధియా", "తదియ", "చవితి", "పంచమి", "షష్టి", "సప్తమి", "అష్టమి", "నవమి", "దశమి", "ఏకాదశి", "ద్వాదశి", "త్రయోదశి", "చతుర్దశి", "అమావాస్య"];
+var kar = ["బావా", "బాలవ", "కౌలవ", "తైతులా", "గరజ", "వనిజ", "విష్టి", "శకునా", "చతుష్పాద", "నాగవ", "కింస్తుఘన"];
+var yog = ["విష్కంభ", "పృథి", "ఆయుష్మాన్", "సౌభాగ్య", "శోభన", "అతిగండ", "సుకర్మాన్", "ధృతి", "సూల","గండ", "వృద్ధి", "ధృవ", "వ్యాఘాత", "హర్షణ", "వజ్ర", "సిద్ధి", "వ్యతిపాత", "వరియన్", "పరిఘ", "శివ","సిద్ధ", "సాధ్య", "శుభ", "శుక్ల", "బ్రహ్మ", "ఇంద్ర", "వైధృతి"];
 var tipnaks = [2, 5, 6, 0, 1, 4, 3, 2, 4, 5, 5, 0, 2, 1, 3, 6, 1, 4, 4, 5, 0, 3, 3, 3, 5, 0, 1];
 var Lmoon, Lsun, skor, LmoonYoga, LsunYoga, dt;
 var ayanamsa = 0;
-var masa = ["Chaitra", "Vaishaakha", "Jyaishtha", "Aashaadha", "Shraavana", "Bhaadrapada", "Aashvayuja", "Kaartika", "Maargashiirsha", "Pushya", "Maagha", "Phaalguna"];
-var samvatsara = ["Prabhava", "Vibhava", "Shukla", "Pramoda", "Prajotpatti", "Aangirasa", "Shriimukha", "Bhaava", "Yuvan", "Dhaatu", "Iishvara", "Bahudhaanya", "Pramaathin", "Vikrama", "Vrisha", "Chitrabhaanu", "Svabhaanu", "Taarana", "Paarthiva", "Vyaya", "Sarvajit", "Sarvadhaarin", "Virodhin", "Vikrita", "Khara", "Nandana", "Vijaya", "Jaya", "Manmatha", "Durmukha", "Hemalambi", "Vilambi", "Vikaarin", "Shaarvari", "Plava", "Shubhakrit", "Shobhana", "Krodhin", "Vishvaavasu", "Paraabhava", "Plavanga", "Kiilaka", "Saumya", "Saadhaarana", "Virodhikrit", "Paritaapin", "Pramaadin", "Aananda", "Raakshasa", "Nala", "Pingala", "Kaalayukti", "Siddhaarthin", "Raudra", "Durmati", "Dundubhi", "Rudhirodgaarin", "Raktaaksha", "Krodhana", "Akshaya"];
+var masa = ["చైత్ర", "వైశాఖ", "జ్యయిష్ఠ", "ఆషాఢ", "శ్రావణ", "భాద్రపద", "ఆశ్వయుజ", "కార్తీక", "మార్గశీర్ష", "పుష్య", "మాఘ", "ఫాల్గుణ"];
+var samvatsara = ["ప్రభవ", "విభవ", "శుక్ల", "ప్రమోద", "ప్రజోత్పత్తి", "ఆంగిరస", "శ్రీముఖ", "భావ", "యువన్", "ధాతు", "ఈశ్వర", "బహుధాన్య", "ప్రమతిన్", "విక్రమ", "వృష", "చిత్రభాను", "స్వభాను", "తారణ", "పార్థివ", "వ్యాయ", "సర్వజిత్", "సర్వధారిన్", "విరోధిన్", "వికృత", "ఖర", "నందన", "విజయ", "జయ", "మన్మథ", "దుర్ముఖ", "హేమలంబి", "విళంబి", "వికారిన్", "శార్వరి", "ప్లావ", "శుభకృత్", "శోభన", "క్రోధిన్","విశ్వావసు", "పరాభవ", "ప్లవంగ", "కీలక", "సౌమ్య", "సాధారణ", "విరోధీకృత", "పరితాపిన్", "ప్రమాదిన్", "ఆనంద", "రాక్షస", "నల", "పింగళ", "కాళయుక్తి", "సిద్ధార్థిన్", "రౌద్ర", "దుర్మతి", "దుందుభి", "రుధిరోద్గారిన్", "రక్తాక్ష", "క్రోధన", "అక్షయ"];
 
 //---------------------------------------------------------------------------
 // Data on the Moon outrage in length.
@@ -842,7 +843,7 @@ panchang = {
       }
 
       this.samvatsara.name = samvatsara[yearMod] ;
-      this.paksham.name = n_tithi < 16 ? "Shukla" : "Krishna" ;
+      this.paksham.name = n_tithi < 16 ? "శుక్ల" : "కృష్ణ" ;
 
       if (cb) { cb(); }
    }

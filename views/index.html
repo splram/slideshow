@@ -4,6 +4,7 @@
   <link rel="stylesheet" type="text/css" href="/styles.css">
   <script src="/panchang.js"></script>
   <script src="/suncalc.js"></script>
+  <meta charset="UTF-8"/>
   <!-- <script src="/lunarphase.js"></script> -->
   <script type="text/javascript">
             /*var test_date = new Date();
@@ -22,7 +23,8 @@
     var dow = 'Mon';
     var fulldow='Monday';
     var _days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    var fulldays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    //var fulldays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var fulldays = ['ఆదివారం', 'సోమవారం', 'మంగళవారం', 'బుధవారం', 'గురువారం', 'శుక్రవారం', 'శనివారం'];
     function getFullDow() {
       let d = (new Date()).getDay();
       return fulldays[d];
@@ -86,6 +88,7 @@
         if (hh == 0 && mi === 0 && se === 0) {
           todayDate = new Date();
           buildMonthNames(todayDate);
+          
         }
 
         if (hh <10) hh = '0' + hh;
@@ -148,7 +151,19 @@
         
       });
     }
+    function showTithisInfo() {
+      var ti= document.getElementById("thithis-info");
+      
+      panchang.calculate(todayDate, function() {
+        let stdt = panchang.Tithi.start + '';
+        stdt = stdt.substr(0, stdt.indexOf('GMT')-1);
+        let eddt = panchang.Tithi.end + '';
+        eddt = eddt.substr(0, eddt.indexOf('GMT')-1);
+        ti.innerText=panchang.Tithi.name + " " + stdt + ' to ' + eddt;
+      })
+    }
     function _showPanchang() {
+      showTithisInfo();
       showPanchang();
     }
     function _showImage() {
@@ -176,6 +191,8 @@
     }
     function buildMonthNames(_curDate) {
       var masa = ["Chaitra", "Vaishaakha", "Jyaishtha", "Aashaadha", "Shraavana", "Bhaadrapada", "Aashvayuja", "Kaartika", "Maargashirsha", "Pushya", "Maagha", "Phaalguna"];
+      var masa_tel = ["చైత్ర", "వైశాఖ", "జైష్ఠ", "ఆషాఢ", "శ్రావణ", "భాద్రపద", "ఆశ్వయుజ", "కార్తిక", "మార్గశీర్ష", "పుష్య", "మాఘా", "ఫాల్గుణ"];
+      masa = masa_tel;
       // calculate months from march occurring between two new moons
       
       var startDayOfMonth = null;
@@ -195,13 +212,13 @@
       }
       //startDayOfMonth.setDate(startDayOfMonth.getDate() - 28);
       startDayOfMonth.setDate(startDayOfMonth.getDate() + 1);
-      console.log("first month date", startDayOfMonth);
+     // console.log("first month date", startDayOfMonth);
       var lastDateOfMonth = new Date(startDayOfMonth);
       lastDateOfMonth.setDate(lastDateOfMonth.getDate() + 1);
       while (!isNewMoon(lastDateOfMonth)) {
         lastDateOfMonth.setDate(lastDateOfMonth.getDate() + 1);
       }
-      console.log("end month date", lastDateOfMonth);
+      //console.log("end month date", lastDateOfMonth);
       months.push({name:masa[0], "start" : new Date(startDayOfMonth), "end" : new Date(lastDateOfMonth)});
 
       startDayOfMonth.setDate(lastDateOfMonth.getDate() + 1);
@@ -221,55 +238,17 @@
 
       }
 
-      console.log("111111111111", months);
+      var moi=document.getElementById("months-info");
+      var mStr = "";
+      for (var i = 0; i < 12; i++) {
+        mStr = mStr + "[ " + months[i].name + ": " + format_date(months[i].start) + "-" + format_date(months[i].end) + " ] ";
+      }
+      moi.innerText = mStr;
+
+
+      //console.log("111111111111", months);
 
     }
-    /*function getMonthName(dt, paksham) {
-      
-      // var tith = ["Padyami", "Vidhiya", "Thadiya", "Chavithi", "Panchami", "Shasti", "Sapthami", "Ashtami", "Navami", "Dasami", "Ekadasi", "Dvadasi", "Trayodasi", "Chaturdasi", "Punnami", "Padyami", "Vidhiya", "Thadiya", "Chaviti", "Panchami", "Shasti", "Sapthami", "Ashtami", "Navami", "Dasami", "Ekadasi", "Dvadasi", "Trayodasi", "Chaturdasi", "Amavasya"];
-      var _dt = new Date(dt);
-      console.log('111111', _dt, paksham)
-      var mname = "";
-      var i = 0;
-      // find new moon
-      while (!isNewMoon(_dt)) {
-        console.log("000000", _dt);
-        _dt.setDate(_dt.getDate() - 1);
-        i++;
-      }
-      var amavasyaDate = _dt;
-      var poornimaDate = dt.setDate(dt.getDate() - 15)
-      console.log('22222222', _dt)
-      if ((dt.getMonth() === 1 && _dt.getMonth() === 0) || (dt.getMonth() === 1 && _dt.getMonth() === 1)) { // Jan
-        mname = "Magha"
-      } else if ((dt.getMonth() === 2 && _dt.getMonth() === 1) || (dt.getMonth() === 2 && _dt.getMonth() === 2)) { // Feb
-        mname = "Phalguna"
-      } else if ((dt.getMonth() === 3 && _dt.getMonth() === 2) || (dt.getMonth() === 3 && _dt.getMonth() === 3)) { // Mar
-        mname = "Chaitra"
-      } else if ((dt.getMonth() === 4 && _dt.getMonth() === 3) || (dt.getMonth() === 4 && _dt.getMonth() === 4)) { // Apr
-        mname = "Vaisakha"
-      } else if ((dt.getMonth() === 5 && _dt.getMonth() === 4) || (dt.getMonth() === 5 && _dt.getMonth() === 5)) { // May
-        mname = "Jyaistha"
-      } else if ((dt.getMonth() === 6 && _dt.getMonth() === 5) || (dt.getMonth() === 6 && _dt.getMonth() === 6)) { // Jun
-        mname = "Asadha"
-      } else if ((dt.getMonth() === 7 && _dt.getMonth() === 6) || dt.getMonth() === 7 && _dt.getMonth() === 7) { // Jul
-        mname = "Shravana"
-      } else if ((dt.getMonth() === 8 &&  _dt.getMonth() === 7) || (dt.getMonth() === 8 &&  _dt.getMonth() === 8)) { // cur month in sep amavasya in aug
-        mname = "Bhadra"
-      } else if ((dt.getMonth() === 9 && _dt.getMonth() === 8) || (dt.getMonth() === 9 && _dt.getMonth() === 9)) {  // current month oct amavasya in sept
-        mname = "Asvija"
-      } else if ((dt.getMonth() === 10 && _dt.getMonth() === 9) || (dt.getMonth() === 10 && _dt.getMonth() === 10)) {  // cur month nov amavasya in oct
-        mname = "Kartika"
-      } else if ((dt.getMonth() === 11 && _dt.getMonth() === 10) || (dt.getMonth() === 11 && _dt.getMonth() === 11)) {  // cur month dec amavasya in nov
-        mname = "Margasira"
-      } else if ((dt.getMonth() === 0 && _dt.getMonth() === 11 || (dt.getMonth() === 0 && _dt.getMonth() === 0 && (dt.getDay() - _dt.getDay() < 15)))) { // cur month jan  amavasya in jan
-        mname = "Pushya"
-      }
-
-
-      
-      return mname;
-    }*/
     
     function getMonthName(_dt) {
       for (var i = 0; i < months.length; i++) {
@@ -306,15 +285,8 @@
     // todayDate.setDate(10);
     // todayDate.setMonth(0)
     // todayDate.setFullYear(2022);
-    buildMonthNames(todayDate);
     setTimeout(() => {
-      var mi=document.getElementById("months-info");
-      var mStr = "";
-      for (var i = 0; i < 12; i++) {
-        mStr = mStr + months[i].name + ": " + format_date(months[i].start) + "-" + format_date(months[i].end) + "|";
-      }
-      mi.innerText = mStr;
-
+      buildMonthNames(todayDate);
       startSlideShow();
     }, 2000);
 
@@ -332,47 +304,54 @@
     <div class="info-block-2">
       <div class="white-text">
         <div class="line1"> 
-          <div id="p_year_label" class="content-label">Samvatsaram</div>
+          <div id="p_year_label" class="content-label">సంవత్సరం</div>
           <div id="p_year" class="content-text"></div>
 
-          <div id="p_maasa_label" class="content-label">Maasam</div>
+          <div id="p_maasa_label" class="content-label">మాసం</div>
           <div id="p_maasa"  class="content-text"></div>
 
-          <div id="p_paksham_label" class="content-label">Paksham</div>
+          <div id="p_paksham_label" class="content-label">పక్షం</div>
           <div id="p_paksham"  class="content-text"></div>
 
-          <p id="p_tithi_label" class="content-label">Tithi</p>
-          <p id="p_tithi" class="content-text"></p>
+          <div id="p_tithi_label" class="content-label">తిథి</div>
+          <div id="p_tithi" class="content-text"></div>
         </div>
         
-        <div class="line1"> 
-          <div id="p_nakshatra_label" class="content-label">Nakshatram</div>
+        <div class="line2"> 
+          <div id="p_nakshatra_label" class="content-label">నక్షత్రం</div>
           <div id="p_nakshatra" class="content-text"></div>
 
-          <div id="p_raasi_label" class="content-label">Raasi</div>
+          <div id="p_raasi_label" class="content-label">రాశి</div>
           <div id="p_raasi" class="content-text"></div>
 
-          <div id="p_karna_label" class="content-label">Karna</div>
+          <div id="p_karna_label" class="content-label">కరణ</div>
           <div id="p_karna" class="content-text"></div>
 
-          <div id="p_yoga_label" class="content-label">Yoga</div>
+          <div id="p_yoga_label" class="content-label">యోగ</div>
           <div id="p_yoga" class="content-text"></div>
 
         </div>
-        </div>
+      </div>
     </div>
+
     <div class="info-block-2">
       <div class="white-text">
-        <div class="month-name" id="months-info">
-            
+        <div class="month-name" >
+            <marquee id="thithis-info">tithis</marquee>
         </div>
       </div>
-    
-  </div>
+    </div>
 
     <div class="main-image">
         <!-- <img id="image" class="img"/> -->
         <div id="image" class="image-styled"></div>
+    </div>
+    <div class="info-block-2">
+      <div class="white-text">
+        <div class="month-name" >
+            <marquee id="months-info"></marquee>
+        </div>
+      </div>
     </div>
   </div>
 <script>
