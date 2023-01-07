@@ -58,7 +58,14 @@
           images = data;
       });
     }
+    function getMonths() {
+      ajax_get('/masam.json', function(data) {
+          months = data;
+      });
+    }
+
     getImages();
+    getMonths();
     function getRandomInt(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
@@ -250,14 +257,34 @@
 
     }
     
-    function getMonthName(_dt) {
+    /*function getMonthName(_dt) {
       for (var i = 0; i < months.length; i++) {
         if (_dt >= months[i].start && _dt <= months[i].end) {
           return months[i].name
         }
       }
       return "";
+    }*/
+    function toDate(str) {
+      var parts =str.split('/');
+      var mydate = parts[2] + '-' + parts[1] + '-' + parts[0] + 'T00:00:00Z';
+      var retdate = new Date(mydate);
+      retdate.setHours(0,0,0,0)
+      return retdate;
     }
+    var masa = ["Chaitra", "Vaishaakha", "Jyaishtha", "Aashaadha", "Shraavana", "Bhaadrapada", "Aashvayuja", "Kaartika", "Maargashirsha", "Pushya", "Maagha", "Phaalguna"];
+      var masa_tel = ["చైత్ర", "వైశాఖ", "జైష్ఠ", "ఆషాఢ", "శ్రావణ", "భాద్రపద", "ఆశ్వయుజ", "కార్తిక", "మార్గశీర్ష", "పుష్య", "మాఘా", "ఫాల్గుణ"];
+    function getMonthName(_dt) {
+      for (var i = 0; i < months.length; i++) {
+        var start = toDate(months[i].start);
+        var end = toDate(months[i].end);
+        if (_dt.getTime() >= start.getTime() && _dt <= end.getTime()) {
+          return masa_tel[months[i].masam];
+        }
+      }
+      return "";
+    }
+
     function format_date(dt) {
       var dd = dt.getDate();
       if (dd < 10) dd = "0" + dd;
@@ -272,6 +299,7 @@
         _showPanchang();
 
         setInterval(() => {
+          getMonths();
           getImages();
           _showImage();
         }, 5 * 1000);
@@ -286,7 +314,7 @@
     // todayDate.setMonth(0)
     // todayDate.setFullYear(2022);
     setTimeout(() => {
-      buildMonthNames(todayDate);
+      //buildMonthNames(todayDate);
       startSlideShow();
     }, 2000);
 

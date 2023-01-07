@@ -60,12 +60,12 @@ p {
 
 .image-styled {
     background-position: top;
-    background-size: contain;
+    background-size: cover;
     display: flex;
     width: 100%;
     transition: background 2s linear;
     background-repeat:no-repeat;
-    height: 80%;
+    height: 78%;
   }
 #p_day {
     font-size: xxx-large;

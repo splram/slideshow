@@ -2,78 +2,19 @@
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="/styles.css">
-  <script src="suncalc.js"></script>
+  <script src="/SunCalc.js"></script>
+  <script src="/panchang.js"></script>
 </head>
 <body>
 
 hello
 
 <script type="text/javascript">
-    function isNewMoon(dt) {
-        dt.setHours(0);
-        dt.setMinutes(0);
-        dt.setSeconds(0);
-        for (var i = 0; i < 720*2; i++) {
-            dt.setMinutes(dt.getMinutes() + 1);
-            dt.setSeconds(0);
-            if (SunCalc.getMoonIllumination(dt).phase >= 0.9677) {
-                return true;
-            }
-        }
-        return false;
-        
+    function buildFullCalendar() {
+        panchang.init();
+
     }
-setTimeout(function() {
-    // get today's sunlight times for London
-
-    //console.log("times=", times, mtimes)
-
-    // format sunrise time from the Date object
-    //var sunriseStr = times.sunrise.getHours() + ':' + times.sunrise.getMinutes();
-    var dt = new Date();
-    dt.setDate(20);
-    dt.setMonth(01);
-    dt.setFullYear(2023);
-    if (isNewMoon(dt)) {
-        console.log("new moon at ", dt, SunCalc.getMoonIllumination(dt).phase);
-    }
-    
-        
-
-    /*for (var i = 0; i < 15; i++) {
-        
-        var times = SunCalc.getTimes(dt, 17.4456832, 78.1877248);
-        var mtimes = SunCalc.getMoonTimes(dt, 17.4456832, 78.1877248);
-        // get position of the sun (azimuth and altitude) at today's sunrise
-        var sunPos = SunCalc.getPosition(times.sunrise, 17.4456832, 78.1877248);
-
-        // get sunrise azimuth in degrees
-        var sunAzimuth = sunPos.azimuth * 180 / Math.PI;
-
-        console.log("sun position", sunPos.azimuth);
-
-        // get position of the moon (azimuth and altitude) at today's sunrise
-        var moonPos = SunCalc.getMoonPosition(mtimes.rise, 17.4456832, 78.1877248);
-
-        // get sunrise azimuth in degrees
-        var moonAzimuth = moonPos.azimuth * 180 / Math.PI;
-
-
-        console.log('moon position', moonPos.azimuth);
-
-
-        var tithiNumber = (moonPos.azimuth - sunPos.azimuth) / 12;
-        if (tithiNumber < 0) {
-            tithiNumber += 360;
-        }
-        console.log(tithiNumber);
-
-
-        dt.setDate(dt.getDate() + 1);
-    }*/
-
-}, 1000)
-
+    buildFullCalendar();
 </script>
 
 </body>
