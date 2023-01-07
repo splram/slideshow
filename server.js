@@ -4,8 +4,8 @@ const path = require('path');
 const app = express();
 const server = http.Server(app);
 const fs = require('fs');
-const axios = require('axios');
-const cheerio = require('cheerio');
+// const axios = require('axios');
+// const cheerio = require('cheerio');
 
 // Configuration
 const DRIK_URL = "https://www.drikpanchang.com/panchang/month-panchang.html";
@@ -25,11 +25,7 @@ var masa_selector = '#dpPHeaderId > div.dpPHeaderContent.dpFlex > div.dpPHeaderL
 var tithi_selector ='#dpPHeaderId > div.dpPHeaderContent.dpFlex > div.dpPHeaderLeftWrapper > div.dpPHeaderLeftContent.dpFlex > div:nth-child(2) > div:nth-child(2)';
 var year_selector = '#dpPHeaderId > div.dpPHeaderContent.dpFlex > div.dpPHeaderLeftWrapper > div.dpPHeaderLeftContent.dpFlex > div:nth-child(2) > div:nth-child(3)';
 
-app.get('/scrape', (req, res) => {
-
-
-})
-
+/*
 async function getPanchangamForDay(dt) {
     var sDate = dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear();
     var obj = {};
@@ -147,7 +143,7 @@ async function getPanchangamForYear(year) {
     });
 }
 
-
+*/
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/index.html'));
 });
@@ -167,8 +163,26 @@ app.get('/suncalc.js', (req, res) => {
 app.get('/lunarphase.js', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/lunarphase.js'));
 });
+app.get('/jquery.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/jquery.js'));
+});
+app.get('/popper.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/popper.js'));
+});
+app.get('/popper.min.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/popper.js'));
+});
+app.get('/bootstrap.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/bootstrap.js'));
+});
+app.get('/bootstrap.min.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/bootstrap.js'));
+});
 app.get('/styles.css', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/styles.css'));
+});
+app.get('/bootstrap.css', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/bootstrap.css'));
 });
 app.get('/new.css', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/new.css'));
