@@ -14,6 +14,7 @@
         test_date.setHours(0);test_date.setMinutes(0);test_date.setSeconds(0);
         console.log("test_date", test_date, getMonthName(test_date), "Shukla");*/
         //buildMonthNames(new Date());
+    var tempstr = '';
     var months = [];
 
     const date = new Date();
@@ -245,12 +246,12 @@
 
       }
 
-      var moi=document.getElementById("months-info");
+     /* var moi=document.getElementById("months-info");
       var mStr = "";
       for (var i = 0; i < 12; i++) {
         mStr = mStr + "[ " + months[i].name + ": " + format_date(months[i].start) + "-" + format_date(months[i].end) + " ] ";
       }
-      moi.innerText = mStr;
+      moi.innerText = mStr;*/
 
 
       //console.log("111111111111", months);
@@ -293,6 +294,24 @@
       if (mm < 10) mm = "0" + mm;
       return dd + "/" + mm  + "/" + dt.getFullYear();
     }
+    
+    function getWeatherInfo() {
+      var wi = document.getElementById("weather-info");
+      try {
+        ajax_get("/temp", res => {
+          if (res.success) {
+            tempstr = 'T:' + res.temperature + '<sup>o</sup>c  H:' + res.humidity + '%';
+            wi.innerHTML = tempstr;
+          } else {
+            //str = '';
+          }
+          
+        })
+      } catch(e) {
+        console.log(e);
+        wi.innerHTML = '';
+      }
+    }
     function startSlideShow() {
       if (images) {
         _showImage();
@@ -303,6 +322,10 @@
           getImages();
           _showImage();
         }, 30 * 1000);
+
+        setInterval(() => {
+         getWeatherInfo();
+        }, 10 * 1000);
 
        setInterval(() => {
           _showPanchang();
@@ -316,6 +339,7 @@
     setTimeout(() => {
       //buildMonthNames(todayDate);
       startSlideShow();
+      getWeatherInfo();
     }, 2000);
 
   </script>
@@ -324,9 +348,10 @@
   <div style="float: left; width: 100%; height:100%;">
     <div class="info-block">
       <div class="white-text">
-        <div id="p_date" style="width:33%;float:left"></div>
-        <div id="p_time" style="width:33%;float:left"></div>
-        <div id="p_day" style="width:33%;float:left"></div>
+        <div id="p_date" style="width:25%;float:left"></div>
+        <div id="p_time" style="width:25%;float:left"></div>
+        <div id="p_day" style="width:30%;float:left"></div>
+        <div id="weather-info" style="width:15%;float:left"></div>
       </div>
     </div>
     <div class="info-block-2">
@@ -381,6 +406,14 @@
         </div>
       </div>
     </div>
+
+    <!-- <div class="info-block-2">
+      <div class="white-text">
+        <div class="month-name" >
+            <marquee id="weather-info"></marquee>
+        </div>
+      </div>
+    </div> -->
   </div>
 <script>
 
