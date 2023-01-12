@@ -1,145 +1,19 @@
-/* Layout styles -----------------------------------*/
-html, body { height: 100%; width: 100%; margin: 0; background-color: black;font-family: Arial, Helvetica, sans-serif;}
-@media (min-width: 900px) {
-  main {
-    column-count: 1;
-    column-gap: 20px;
-    height: 100%;
-  }
-  
-  section {
-    break-inside: avoid;
-  }
+.carousel-height {
+  height: 1100px;
+}
+.carousel-img-height {
+  height: 1100px;
+}
+.padding-0{
+  padding-right:0;
+  padding-left:0;
+}
+.padding-5{
+  padding-right:5px;
+  padding-left:5px;
 }
 
-@media (min-width: 901px) {
-  main {
-     column-count: 2;
-  }
+.padding-10{
+  padding-right:10px;
+  padding-left:10px;
 }
-
-/* styles */
-
-:root {
-  --blue: #34495e;
-  --green: #e74c3c;
-  --yellow: #C9C243;
-  --orange: #FFA644;
-  --red: #3498db;
-}
-
-body {
-  background-color: var(--blue);
-  font-family: 'Ubuntu', sans-serif;
-  color: #34495e;
-}
-
-main {    
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-header {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px 20px 0;
-}
-
-.title {
-  font-size: 2.6em;
-  text-align: center;
-  color: white;
-  margin-bottom: 20px
-}
-
-.figure-img {
-  display: block;
-  width: 100%;
-  object: fit;
-}
-
-h2 {
-  font-size: 1.4em;
-  padding: 10px;
-}
-
-p {
-  margin-bottom: 1em;
-  padding: 0 10px;
-}
-
-.info-link {
-  text-decoration: none;
-  color: var(--green);
-  padding: 10px;
-  display: block;
-}
-
-.options {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 10px;
-  border-top: 3px solid var(--red);
-  border-radius: 3px;
-  background-color: white;
-}
-
-.options-link {
-  text-decoration: none;
-  font-size: 0.9em;
-  color: var(--red);
-}
-
-section {
-  border-top: 3px solid var(--red);
-  border-radius: 3px;
-  background-color: white;
-  margin-bottom: 20px;
-  overflow: hidden;
-}
-
-.section-img {
-  display: block;
-  padding: 10px;
-  margin: 0 auto;
-}
-
-.bigtitle {
-  padding: 0;
-}
-
-.bigtitle-title {
-  color: white;
-  background-color: var(--red);
-  margin-bottom: 10px;
-}
-
-.bigbottom-link {
-  background-color: var(--green);
-  color: white;
-}
-
-.profile {
-  width: 80%;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-
-@media (min-width: 900px) {
-  .options-link {
-    font-size: 1.4em;
-  }
-}
-
-.image-styled {
-    background-position: top;
-    background-size: contain;
-    display: flex;
-    width: 100%;
-    height: 100%;
-    transition: background 2s linear;
-    background-repeat:no-repeat;
-    
-  }

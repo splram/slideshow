@@ -162,7 +162,7 @@
     function showTithisInfo() {
       var ti= document.getElementById("thithis-info");
       
-      panchang.calculate(todayDate, function() {
+      panchang.calculate((new Date()), function() {
         let stdt = panchang.Tithi.start + '';
         stdt = stdt.substr(0, stdt.indexOf('GMT')-1);
         let eddt = panchang.Tithi.end + '';
@@ -350,40 +350,40 @@
       <div class="white-text">
         <div id="p_date" style="width:25%;float:left"></div>
         <div id="p_time" style="width:25%;float:left"></div>
-        <div id="p_day" style="width:30%;float:left"></div>
-        <div id="weather-info" style="width:15%;float:left"></div>
+        <div id="p_day" style="width:22%;float:left"></div>
+        <div id="weather-info" style="width:28%;float:left;font-size: 35px;"></div>
       </div>
     </div>
     <div class="info-block-2">
       <div class="white-text">
-        <div class="line1"> 
-          <div id="p_year_label" class="content-label">సంవత్సరం</div>
-          <div id="p_year" class="content-text"></div>
+        <marquee>
+          <div class="line1"> 
+            <div id="p_year_label" class="content-label">సంవత్సరం</div>
+            <div id="p_year" class="content-text"></div>
 
-          <div id="p_maasa_label" class="content-label">మాసం</div>
-          <div id="p_maasa"  class="content-text"></div>
+            <div id="p_maasa_label" class="content-label">మాసం</div>
+            <div id="p_maasa"  class="content-text"></div>
 
-          <div id="p_paksham_label" class="content-label">పక్షం</div>
-          <div id="p_paksham"  class="content-text"></div>
+            <div id="p_paksham_label" class="content-label">పక్షం</div>
+            <div id="p_paksham"  class="content-text"></div>
 
-          <div id="p_tithi_label" class="content-label">తిథి</div>
-          <div id="p_tithi" class="content-text"></div>
-        </div>
-        
-        <div class="line2"> 
-          <div id="p_nakshatra_label" class="content-label">నక్షత్రం</div>
-          <div id="p_nakshatra" class="content-text"></div>
+            <div id="p_tithi_label" class="content-label">తిథి</div>
+            <div id="p_tithi" class="content-text"></div>
 
-          <div id="p_raasi_label" class="content-label">రాశి</div>
-          <div id="p_raasi" class="content-text"></div>
+            <div id="p_nakshatra_label" class="content-label">నక్షత్రం</div>
+            <div id="p_nakshatra" class="content-text"></div>
 
-          <div id="p_karna_label" class="content-label">కరణ</div>
-          <div id="p_karna" class="content-text"></div>
+            <div id="p_raasi_label" class="content-label">రాశి</div>
+            <div id="p_raasi" class="content-text"></div>
 
-          <div id="p_yoga_label" class="content-label">యోగ</div>
-          <div id="p_yoga" class="content-text"></div>
+            <div id="p_karna_label" class="content-label">కరణ</div>
+            <div id="p_karna" class="content-text"></div>
 
-        </div>
+            <div id="p_yoga_label" class="content-label">యోగ</div>
+            <div id="p_yoga" class="content-text"></div>
+
+          </div>
+        </marquee>
       </div>
     </div>
 

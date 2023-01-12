@@ -1,21 +1,272 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="/styles.css">
-  <script src="/SunCalc.js"></script>
+  <link rel="stylesheet" href="/bootstrap.css" >
+  <link rel="stylesheet" href="/new.css" >
   <script src="/panchang.js"></script>
+  <script src="/jquery.js" ></script>
+  <script src="/popper.js"></script>
+  <script src="/bootstrap.js" ></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
 </head>
 <body>
 
-hello
+  <div class="container-fluid padding-0">
+    
 
-<script type="text/javascript">
-    function buildFullCalendar() {
-        panchang.init();
+    
+    <div class="row">
+      <div class="col-4 padding-10">
 
-    }
-    buildFullCalendar();
-</script>
+        <div class="col-12 padding-5" >
+          <div class="col-md-12 padding-5">
+            <div class="bg-primary padding-5">Date</div>
+            <div class="bg-success padding-5" id="p_date"></div>
+          </div>
+
+          <div class="col-md-12 padding-5">
+            <div class="bg-primary padding-5">Time</div>
+            <div class="bg-success padding-5" id="p_time"></div>
+          </div>
+          <div class="col-md-12 padding-5">
+            <div class="bg-primary padding-5">Day</div>
+            <div class="bg-success padding-5" id="p_day"></div>
+          </div>
+
+          <div class="col-md-12 padding-5">
+            <div class="bg-primary padding-5">Samvatsaram</div>
+            <div class="bg-success padding-5" id="p_year"></div>
+          </div>
+          <div class="col-md-12 padding-5">
+            <div class="bg-primary padding-5">Masa</div>
+            <div class="bg-success padding-5" id="p_maasa"></div>
+          </div>
+          <div class="col-md-12 padding-5">
+            <div class="bg-primary padding-5">Paksham</div>
+            <div class="bg-success padding-5" id="p_paksham"></div>
+          </div>
+          <div class="col-md-12 padding-5">
+            <div class="bg-primary padding-5">Tithi</div>
+            <div class="bg-success padding-5" id="p_tithi"></div>
+          </div>
+
+          <div class="col-md-12 padding-5">
+            <div class="bg-primary padding-5">Nakshatra</div>
+            <div class="bg-success padding-5" id="p_nakshatra"></div>
+          </div>
+          <div class="col-md-12 padding-5">
+            <div class="bg-primary padding-5">Raasi</div>
+            <div class="bg-success padding-5" id="p_raasi"></div>
+          </div>
+          <div class="col-md-12 padding-5">
+            <div class="bg-primary padding-5">Karna</div>
+            <div class="bg-success padding-5" id="p_karna"></div>
+          </div>
+          <div class="col-md-12 padding-5">
+            <div class="bg-primary padding-5">Yoga</div>
+            <div class="bg-success padding-5" id="p_yoga"></div>
+          </div>
+          
+        </div>
+
+      </div>
+      <div class="col-8 bg-secondary">
+        <div id="carouselExampleIndicators" class="carousel slide " data-ride="carousel">
+          <div class="carousel-inner carousel-height" id="carousel-inner">
+            
+          </div>
+        </div>
+
+      </div>
+    </div>
+    
+  </div>
+
 
 </body>
+<script type="text/javascript">
+      var images = [];
+    var months = [];
+
+  var _days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    var fulldays = ['ఆదివారం', 'సోమవారం', 'మంగళవారం', 'బుధవారం', 'గురువారం', 'శుక్రవారం', 'శనివారం'];
+    function getFullDow() {
+      let d = (new Date()).getDay();
+      return fulldays[d];
+    }
+
+    function getDow() {
+      let d = (new Date()).getDay();
+      return _days[d];
+    }
+    function ajax_get(url, callback) {
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+          //                console.log('responseText:' + xmlhttp.responseText);
+          try {
+            var data = JSON.parse(xmlhttp.responseText);
+          } catch (err) {
+            console.log(err.message + " in " + xmlhttp.responseText);
+            return;
+          }
+          callback(data);
+        }
+      };
+
+      xmlhttp.open("GET", url, true);
+      xmlhttp.send();
+    }
+    
+    function getMonths() {
+      ajax_get('/masam.json', function(data) {
+          months = data;
+          console.log("months", months)
+      });
+    }
+    function getImages() {
+      dow = getDow();
+      ajax_get('/images?folder=' + dow, function (data) {
+        images = data;
+        setTimeout(() => {
+          loadImages();
+        }, 1000);
+      });
+    }
+
+    function loadImages() {
+      var str = '';
+      for (var i = 0; i < images.length; i++) {
+        if (i === 0) {
+          str = `
+        <div class="carousel-item active">
+          <img class="d-block w-100 carousel-img-height" src="/showimage?imagePath=${images[i]}">
+        </div>
+      `;
+        } else {
+          str += `
+        <div class="carousel-item">
+          <img class="d-block w-100 carousel-img-height" src="/showimage?imagePath=${images[i]}" alt="Second slide">
+        </div>
+      
+      `;
+        }
+      }
+
+      var el = document.getElementById('carousel-inner');
+      el.innerHTML = str;
+    }
+
+    function init() {
+      getMonths();
+      getImages();
+      setTimeout(() => {
+        showPanchang();
+      }, 3000);
+    }
+    var masa = ["Chaitra", "Vaishaakha", "Jyaishtha", "Aashaadha", "Shraavana", "Bhaadrapada", "Aashvayuja", "Kaartika", "Maargashirsha", "Pushya", "Maagha", "Phaalguna"];
+    var masa_tel = ["చైత్ర", "వైశాఖ", "జైష్ఠ", "ఆషాఢ", "శ్రావణ", "భాద్రపద", "ఆశ్వయుజ", "కార్తిక", "మార్గశీర్ష", "పుష్య", "మాఘా", "ఫాల్గుణ"];
+    function toDate(str) {
+      var parts =str.split('/');
+      var mydate = parts[2] + '-' + parts[1] + '-' + parts[0] + 'T00:00:00Z';
+      var retdate = new Date(mydate);
+      retdate.setHours(0,0,0,0)
+      return retdate;
+    }
+    function getMonthName(_dt) {
+      for (var i = 0; i < months.length; i++) {
+        var start = toDate(months[i].start);
+        var end = toDate(months[i].end);
+        if (_dt.getTime() >= start.getTime() && _dt <= end.getTime()) {
+          return masa_tel[months[i].masam];
+        }
+      }
+      return "";
+    }
+    function showPanchang() {
+      var t = new Date();
+      fulldow = getFullDow();
+      panchang.calculate(t, function () {
+        var el = document.getElementById("p_date");
+        const today = t;
+        const yyyy = today.getFullYear();
+        let mm = today.getMonth() + 1; // Months start at 0!
+        let dd = today.getDate();
+
+        if (dd < 10) dd = '0' + dd;
+        if (mm < 10) mm = '0' + mm;
+
+        const formattedToday = dd + '/' + mm + '/' + yyyy;
+        el.innerText = formattedToday;
+
+        let hh = today.getHours();
+        let mi = today.getMinutes();
+        let se = today.getSeconds();
+        if (hh == 0 && mi === 0 && se === 0) {
+          todayDate = new Date();
+        }
+
+        if (hh < 10) hh = '0' + hh;
+        if (mi < 10) mi = '0' + mi;
+        if (se < 10) se = '0' + se;
+        const formattedTime = hh + ":" + mi + ":" + se;
+        el = document.getElementById("p_time");
+        el.innerText = formattedTime;
+
+        el = document.getElementById("p_day");
+        el.innerText = fulldow;
+
+        el = document.getElementById('p_tithi');
+        let stdt = panchang.Tithi.start + '';
+        stdt = stdt.substr(0, stdt.indexOf('GMT') - 1);
+        let eddt = panchang.Tithi.end + '';
+        eddt = eddt.substr(0, eddt.indexOf('GMT') - 1);
+        el.innerText = panchang.Tithi.name// + " " + stdt + ' to ' + eddt;
+
+        el = document.getElementById('p_nakshatra');
+        stdt = panchang.Nakshatra.start + '';
+        stdt = stdt.substr(0, stdt.indexOf('GMT') - 1);
+        eddt = panchang.Nakshatra.end + '';
+        eddt = eddt.substr(0, eddt.indexOf('GMT') - 1);
+        el.innerText = panchang.Nakshatra.name //+ " " + stdt + ' to ' + eddt;
+
+
+        el = document.getElementById('p_raasi');
+        el.innerText = panchang.Raasi.name;
+
+        el = document.getElementById('p_karna');
+        stdt = panchang.Karna.start + '';
+        stdt = stdt.substr(0, stdt.indexOf('GMT') - 1);
+        eddt = panchang.Karna.end + '';
+        eddt = eddt.substr(0, eddt.indexOf('GMT') - 1);
+        el.innerText = panchang.Karna.name //+ " " + stdt + ' to ' + eddt;
+
+        el = document.getElementById('p_paksham');
+        el.innerText = panchang.paksham.name;
+
+        el = document.getElementById('p_maasa');
+        //el.innerText='Maasa: ' + getMonthName(new Date(), panchang.paksham.name);
+        el.innerText = getMonthName(new Date());
+
+        // console.log("1111111111", x, isNewMoon(x));
+
+        el = document.getElementById('p_year');
+        el.innerText = panchang.samvatsara.name;
+
+
+        el = document.getElementById('p_yoga');
+        stdt = panchang.Yoga.start + '';
+        stdt = stdt.substr(0, stdt.indexOf('GMT') - 1);
+        eddt = panchang.Yoga.end + '';
+        eddt = eddt.substr(0, eddt.indexOf('GMT') - 1);
+        el.innerText = panchang.Yoga.name;// + " " + stdt + ' to ' + eddt;
+
+
+
+      });
+}
+init();
+
+</script>
 </html> 

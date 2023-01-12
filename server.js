@@ -154,23 +154,30 @@ app.get('/temp', async (req, res) => {
     //await new Promise((resolve, reject) => {
         res.setHeader('Content-Type', 'application/json');
         var resp = {};
-        var sensorData = sensor.read(11, 4) //, function(err, temperature, humidity) {
-            // console.log(temperature, humidity)
-            if (sensorData) {
-              resp.success = true;
-              resp.temperature=sensorData.temperature;
-              resp.humidity=sensorData.humidity;
-            } else {
-                resp.success = false;
+        try {
+            var sensorData = sensor.read(11, 4) //, function(err, temperature, humidity) {
+                // console.log(temperature, humidity)
+                if (sensorData) {
+                resp.success = true;
+                resp.temperature=sensorData.temperature;
+                resp.humidity=sensorData.humidity;
+                } else {
+                    resp.success = false;
+                }
+                res.json(resp);
+    //            resolve(resp)
+    //       });
+        // }).then(resp=> {
+        //     //console.log("sending resp", resp)
+        //     res.setHeader('Content-Type', 'application/json');
+        //     res.send(JSON.stringify(resp))
+        // })
+            } catch(e) {
+                resp.success = true;
+                resp.temperature = 20;
+                resp.humidity = 40;
+                res.json(resp);
             }
-            res.json(resp);
-//            resolve(resp)
- //       });
-    // }).then(resp=> {
-    //     //console.log("sending resp", resp)
-    //     res.setHeader('Content-Type', 'application/json');
-    //     res.send(JSON.stringify(resp))
-    // })
 
 })
 app.get('/', (req, res) => {
