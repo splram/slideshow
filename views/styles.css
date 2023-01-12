@@ -38,9 +38,10 @@ html, body { height: 100%; width: 100%; margin: 0; background-color: black;font-
 .month-name {
     font-size: xx-large;
     color: darkgray;
-    padding-top : 10px;
+    padding-top : 0px;
     position: relative;
-    line-height: 40px;
+    line-height: 50px;
+    top:0px;
 }
 .month-range {
     font-size: 15px;

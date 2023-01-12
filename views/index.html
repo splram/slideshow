@@ -74,9 +74,12 @@
     }
     function showPanchang() {
       var t = new Date();
+      //t.setDate(t.getDate()+11);
       fulldow = getFullDow();
+      
       panchang.calculate(t, function() {
         
+
 //        console.log(panchang)
         var el=document.getElementById("p_date");
         const today = t;
@@ -161,8 +164,9 @@
     }
     function showTithisInfo() {
       var ti= document.getElementById("thithis-info");
-      
-      panchang.calculate((new Date()), function() {
+      var t = new Date();
+      //t.setDate(t.getDate() + 11)
+      panchang.calculate(t, function() {
         let stdt = panchang.Tithi.start + '';
         stdt = stdt.substr(0, stdt.indexOf('GMT')-1);
         let eddt = panchang.Tithi.end + '';
