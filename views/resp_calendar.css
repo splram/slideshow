@@ -1,0 +1,153 @@
+/* CSS Document */
+.btn-rounded-dark{
+    position: relative;
+    transition: all .5s;
+  }
+  .btn-rounded-dark:after{
+    content: '';
+    position: absolute;
+    width: 0;
+    top: 50%;
+    height: 0;
+    border-radius: 50%;
+    transition: all .5s;
+    opacity: 0;
+    background: #343a40;
+    border: 1px solid transparent;
+    display:none
+  }
+  .btn-rounded-dark:hover:after{
+    content: '';/*attr(data-date);*/
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 15%;
+    opacity: 1;
+    background: transparent;
+    color: #fff;
+    border-radius: 50%;
+    border: 1px solid #343a40;
+    display:none
+  }
+  .btn-rounded-success{
+    position: relative;
+    transition: all .5s;
+  }
+  .btn-rounded-success:after{
+    content: '';
+    position: absolute;
+    width: 0;
+    top: 50%;
+    height: 0;
+    border-radius: 50%;
+    transition: all .5s;
+    opacity: 0;
+    background: #28a745;
+    border: 1px solid transparent;
+    display:none
+  }
+  .btn-rounded-success:hover:after{
+    content: '';/*attr(data-date);*/
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 15%;
+    opacity: 1;
+    background: transparent;
+    color: #fff;
+    border-radius: 50%;
+    border: 1px solid #28a745;
+    display:none
+  }
+  .current-date-selected{
+    color: #dc3545;
+    font-weight: bold;
+  }
+  .current-date-selected:after{
+    content: '';/*attr(data-date);*/
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 15%;
+    opacity: 1;
+    background: transparent;
+    color: #fff;
+    border-radius: 50%;
+    border: 1px solid #dc3545;
+    display:none
+  }
+  .current-date-selected:hover:after{
+    content: '';/*attr(data-date);*/
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 15%;
+    opacity: 1;
+    background: #dc354533;
+    color: #fff;
+    border-radius: 50%;
+    border: 1px solid #dc3545;
+    display:none
+  }
+  .cell-height {
+    height: 155px !important;
+  }
+
+  @media (orientation: landscape) {
+    .cell-height {
+      height: 92px !important;
+    }
+  }
+
+  @media (max-width: 1920px) {
+    .cell-height {
+      height: 192px !important;
+    }
+  }
+
+  .panchang-margin-right {
+    margin-right: 3px;
+  }
+
+  
+  @media (max-width: 1920px) {
+    .panchang-font-size {
+      font-size: 40px !important;
+    }
+  }
+  @media (max-width: 1600px) {
+    .panchang-font-size {
+      font-size: 35px !important;
+    }
+  }
+  @media (max-width: 998px) {
+    .panchang-font-size {
+      font-size: 30px !important;
+    }
+  }
+  .panchang-day-font-color {
+    color: #0359f8;
+  }
+
+  .panchang-samvatsara-font-color {
+    color:#0808ee8f;
+  }
+  .panchang-masam-font-color {
+    color:#b208c9b6
+  }
+  .panchang-paksham-font-color {
+    color:#a8353fb6
+  }
+  .panchang-tithi-font-color {
+    color:#1c349eb6
+  }
+
+  .pt-3{
+    padding-top: 0px !important;
+  }
+ .panchang-day-cell {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    height: 30px;
+ }

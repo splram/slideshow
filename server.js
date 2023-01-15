@@ -211,6 +211,24 @@ app.get('/popper.min.js', (req, res) => {
 app.get('/bootstrap.js', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/bootstrap.js'));
 });
+app.get('/calendar.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/calendar.js'));
+});
+app.get('/moment.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/moment.js'));
+});
+app.get('/calendar.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/calendar.html'));
+});
+app.get('/resp_calendar.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/resp_calendar.js'));
+});
+app.get('/resp_calendar.css', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/resp_calendar.css'));
+});
+app.get('/fontawesome.css', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views/fontawesome.css'));
+});
 app.get('/bootstrap.min.js', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/bootstrap.js'));
 });
